@@ -17,7 +17,7 @@ type UserRepository struct {
 }
 
 
-func NewUserRepo(db *gorm.DB, redisClient *redis.Client) *UserRepository {
+func newUserRepo(db *gorm.DB, redisClient *redis.Client) *UserRepository {
 	return &UserRepository{db: db, redisClient:  redisClient}
 }
 
@@ -42,6 +42,37 @@ func (r *UserRepository) CreateUser(ctx context.Context, user *models.User) (str
 	}
 	return user.Login, r.userCaching(ctx, user)
 }
+
+
+func (r* UserRepository) GetUserLogin(ctx context.Context, user *models.User) (models.User, error) {
+	key := userCacheKey(user.Login)
+	var newUser models.User
+
+	err := r.redisClient.HGetAll(ctx, key).Scan(&newUser)
+	if err == nil && newUser.Login != "" {
+		return newUser, nil
+	}
+	
+	if err := r.db.Where("Login= ?", user.Login).First(&newUser).Error; err != nil {
+		return newUser, fmt.Errorf("Repository: User not found: %w", err)
+	}
+	return newUser, r.userCaching(ctx, &newUser)
+} 
+
+func (r* UserRepository) GetUserEmail(ctx context.Context, user *models.User) (models.User, error) {
+	key := userCacheKey(user.Email)
+	var newUser models.User
+
+	err := r.redisClient.HGetAll(ctx, key).Scan(&newUser)
+	if err == nil && newUser.Email != "" {
+		return newUser, nil
+	}
+	
+	if err := r.db.Where("Email= ?", user.Email).First(&newUser).Error; err != nil {
+		return newUser, fmt.Errorf("Repository: User not found: %w", err)
+	}
+	return newUser, r.userCaching(ctx, &newUser)
+} 
 
 
 func userCacheKey(userLogin string) string {
