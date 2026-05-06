@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/DestWish/HackMate/Auth-service/internal/models"
-	"github.com/DestWish/HackMate/Auth-service/internal/repository"
+	"github.com/HackMateGolang/AuthService/internal/models"
+	"github.com/HackMateGolang/AuthService/internal/repository"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )

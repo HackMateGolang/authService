@@ -6,7 +6,7 @@ import (
 	// "gorm.io/datatypes"
 	// "time"
 
-	"github.com/DestWish/HackMate/Auth-service/internal/models"
+	"github.com/HackMateGolang/AuthService/internal/models"
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
