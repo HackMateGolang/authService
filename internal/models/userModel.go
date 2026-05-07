@@ -24,3 +24,11 @@ type UserGetRequest struct {
 	Login string
 	Email string
 } 
+type UserPatchRequest struct {
+	Login string
+	Email string
+	PasswordHash *string
+	IsVerified *bool
+	Role *string
+	CreatedAt *time.Time
+}
