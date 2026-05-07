@@ -104,6 +104,38 @@ func (r* UserRepository) PatchUser(ctx context.Context, req *models.UserPatchReq
 	return true, r.userCaching(ctx, &patchedUser)
 
 }
+func (r* UserRepository) PutUser(ctx context.Context, req *models.UserPutRequest) (bool, error){
+	modifiedUserLogin := r.db.Model(&models.User{}).Where("Login = ?", req.Login).Select("*").Updates(req)
+	modifiedUserEmail := r.db.Model(&models.User{}).Where("Email = ?", req.Email).Select("*").Updates(req)
+
+	
+	if modifiedUserLogin.Error != nil {
+		return false, fmt.Errorf("Repository: User not found: %w", modifiedUserLogin.Error)
+	}
+
+	if modifiedUserEmail.Error != nil {
+		return  false, fmt.Errorf("Repository: User not found: %w", modifiedUserEmail.Error)
+	}
+
+	if modifiedUserLogin.RowsAffected == 0 {
+		return false, fmt.Errorf("Repository: User not found: %w", modifiedUserLogin.Error)
+	}
+
+	if modifiedUserEmail.RowsAffected == 0 {
+		return false, fmt.Errorf("Repository: User not found: %w", modifiedUserEmail.Error)
+	}
+
+	var putUser models.User
+	if err := r.db.Where("Login=?", req.Login).First(&putUser).Error; err != nil {
+		return false, fmt.Errorf("Repository: Patched user not found: %w", err)
+	}
+	if err := r.db.Where("Email=?", req.Email).First(&putUser).Error; err != nil {
+		return false, fmt.Errorf("Repository: Patched user not found: %w", err)
+	}
+	return true, r.userCaching(ctx, &putUser)
+
+}
+
 
 
 func userCacheKey(userLogin string) string {

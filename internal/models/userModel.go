@@ -32,3 +32,11 @@ type UserPatchRequest struct {
 	Role *string
 	CreatedAt *time.Time
 }
+type UserPutRequest struct {
+	Login string
+	Email string
+	PasswordHash string
+	IsVerified bool
+	Role string
+	CreatedAt time.Time
+}
