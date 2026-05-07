@@ -49,6 +49,24 @@ func (s *UserService) CreateUser(ctx context.Context, req *models.UserCreateRequ
  return token, nil
 }
 
+
+
+func (s *UserService) GetUser(ctx context.Context, req *models.UserCreateRequest) (models.User, error) {
+	user := &models.User{Login: req.Login, Email: req.Email}
+	if _, err := s.repo.GetUserLogin(ctx, user); err != nil{
+		return *user, fmt.Errorf("Service: There is no User with this login.") 
+	}
+	if _, err := s.repo.GetUserEmail(ctx, user); err != nil{
+		return *user, fmt.Errorf("Service: There is no User with this email.") 
+	}
+	FoundUser, err := s.repo.GetUserEmail(ctx, user)
+	if err != nil {
+		return FoundUser, err
+	}
+	return FoundUser, nil
+}
+
+
 func generateToken(userId string) (string, error) {
 	claims := jwt.MapClaims{
 		"user_id": userId,

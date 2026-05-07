@@ -19,3 +19,8 @@ type UserCreateRequest struct {
 	Email string
 	Password string
 } 
+
+type UserGetRequest struct {
+	Login string
+	Email string
+} 
