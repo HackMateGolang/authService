@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"context"
 	"time"
 
@@ -20,25 +21,32 @@ func NewUserService(repo repository.UserRepository) *UserService {
 	return &UserService{repo: repo}
 }
 
-func (s *UserService) CreateUser (ctx context.Context, req *models.UserCreateRequest) (string, error) {
-	passwordHash, err := hashPassword(req.Password)
-	if err != nil {
-		return "", err
-	}
+func (s *UserService) CreateUser(ctx context.Context, req *models.UserCreateRequest) (string, error) {
+ passwordHash, err := hashPassword(req.Password)
+ if err != nil {
+  return "", err
+ }
 
-	user := &models.User{Login: req.Login, Email: req.Email, PasswordHash: passwordHash}
+ user := &models.User{Login: req.Login, Email: req.Email, PasswordHash: passwordHash}
 
-	login, err := s.repo.CreateUser(ctx, user)
-	if err != nil {
-		return "", err
-	}
+ if _, err := s.repo.GetUserLogin(ctx, user); err == nil {
+  return "Error", fmt.Errorf("Service: User with same login already exists")
+ }
+ if _, err := s.repo.GetUserEmail(ctx, user); err == nil {
+  return "Error", fmt.Errorf("Service: User with same email already exists")
+ }
 
-	token, err := generateToken(login)
-	if err != nil {
-		return "", err 
-	}
+ login, err := s.repo.CreateUser(ctx, user)
+ if err != nil {
+  return "", err
+ }
 
-	return token, nil
+ token, err := generateToken(login)
+ if err != nil {
+  return "", err
+ }
+
+ return token, nil
 }
 
 func generateToken(userId string) (string, error) {
