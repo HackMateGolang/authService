@@ -1,8 +1,9 @@
 package service
 
 import (
-	"fmt"
 	"context"
+	"fmt"
+	"os/user"
 	"time"
 
 	"github.com/HackMateGolang/AuthService/internal/models"
@@ -65,6 +66,19 @@ func (s *UserService) GetUser(ctx context.Context, req *models.UserCreateRequest
 	}
 	return FoundUser, nil
 }
+
+func (s *UserService) PatchUser(ctx context.Context, req *models.UserPatchRequest) (bool, error) {
+	user := &models.UserPatchRequest{Login: req.Login, Email: req.Email, PasswordHash: req.PasswordHash, IsVerified: req.IsVerified, Role: req.Role, CreatedAt: req.CreatedAt}
+	if _, err := s.repo.PatchUser(ctx, user); err == nil{
+		return false, fmt.Errorf("Service: Patch failed %w", err)
+	}
+	PatchUser, err := s.repo.PatchUser(ctx, user)
+	if err != nil {
+		return false, fmt.Errorf("Service: Patch failed %w", err)
+	}
+	return PatchUser, nil
+}
+
 
 
 func generateToken(userId string) (string, error) {
