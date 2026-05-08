@@ -26,7 +26,7 @@ type UserGetRequest struct {
 } 
 type UserPatchRequest struct {
 	Login string
-	Email string
+	Email *string
 	PasswordHash *string
 	IsVerified *bool
 	Role *string
