@@ -136,6 +136,18 @@ func (r* UserRepository) PutUser(ctx context.Context, req *models.UserPutRequest
 
 }
 
+func (r* UserRepository) DeleteUser(ctx context.Context, req *models.UserDeleteRequest) (bool, error){
+	if errEmail := r.db.Delete(&models.User{}, req.Email).Error; errEmail != nil {
+		return false, fmt.Errorf("Repository: User not found: %w", errEmail)
+	}
+	if errLogin := r.db.Delete(&models.User{}, req.Login).Error; errLogin != nil {
+		return false, fmt.Errorf("Repository: User not found: %w", errLogin)
+	}
+	key := userCacheKey(req.Email)
+	r.redisClient.Del(ctx, key).Err()
+
+	return true, nil
+}
 
 
 func userCacheKey(userLogin string) string {

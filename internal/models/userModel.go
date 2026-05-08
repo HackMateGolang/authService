@@ -40,3 +40,7 @@ type UserPutRequest struct {
 	Role string
 	CreatedAt time.Time
 }
+type UserDeleteRequest struct {
+	Login string
+	Email string
+}
