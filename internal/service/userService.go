@@ -67,16 +67,15 @@ func (s *UserService) GetUser(ctx context.Context, req *models.UserCreateRequest
 }
 
 func (s *UserService) PatchUser(ctx context.Context, req *models.UserPatchRequest) (bool, error) {
-	user := &models.UserPatchRequest{Login: req.Login, Email: req.Email, PasswordHash: req.PasswordHash, IsVerified: req.IsVerified, Role: req.Role, CreatedAt: req.CreatedAt}
-	if _, err := s.repo.PatchUser(ctx, user); err == nil{
-		return false, fmt.Errorf("Service: Patch failed %w", err)
-	}
-	PatchUser, err := s.repo.PatchUser(ctx, user)
-	if err != nil {
-		return false, fmt.Errorf("Service: Patch failed %w", err)
-	}
-	return PatchUser, nil
+	return s.repo.PatchUser(ctx, req)
 }
+func (s *UserService) PutUser(ctx context.Context, req *models.UserPutRequest) (bool, error) {
+	return s.repo.PutUser(ctx, req)
+}
+func (s *UserService) DeleteUser(ctx context.Context, req *models.UserDeleteRequest) (bool, error) {
+	return s.repo.DeleteUser(ctx, req)
+}
+
 
 
 
