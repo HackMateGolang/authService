@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"fmt"
-	"os/user"
 	"time"
 
 	"github.com/HackMateGolang/AuthService/internal/models"
