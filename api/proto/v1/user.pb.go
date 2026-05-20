@@ -84,12 +84,7 @@ func (x *CreateUserRequest) GetPassword() string {
 
 type CreateUserResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Login         string                 `protobuf:"bytes,1,opt,name=login,proto3" json:"login,omitempty"`
-	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
-	PasswordHash  string                 `protobuf:"bytes,3,opt,name=passwordHash,proto3" json:"passwordHash,omitempty"`
-	IsVerified    bool                   `protobuf:"varint,4,opt,name=isVerified,proto3" json:"isVerified,omitempty"`
-	Role          string                 `protobuf:"bytes,5,opt,name=role,proto3" json:"role,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=CreatedAt,proto3" json:"CreatedAt,omitempty"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -124,46 +119,11 @@ func (*CreateUserResponse) Descriptor() ([]byte, []int) {
 	return file_api_proto_v1_user_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreateUserResponse) GetLogin() string {
+func (x *CreateUserResponse) GetToken() string {
 	if x != nil {
-		return x.Login
+		return x.Token
 	}
 	return ""
-}
-
-func (x *CreateUserResponse) GetEmail() string {
-	if x != nil {
-		return x.Email
-	}
-	return ""
-}
-
-func (x *CreateUserResponse) GetPasswordHash() string {
-	if x != nil {
-		return x.PasswordHash
-	}
-	return ""
-}
-
-func (x *CreateUserResponse) GetIsVerified() bool {
-	if x != nil {
-		return x.IsVerified
-	}
-	return false
-}
-
-func (x *CreateUserResponse) GetRole() string {
-	if x != nil {
-		return x.Role
-	}
-	return ""
-}
-
-func (x *CreateUserResponse) GetCreatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreatedAt
-	}
-	return nil
 }
 
 type GetUserRequest struct {
@@ -662,16 +622,9 @@ const file_api_proto_v1_user_proto_rawDesc = "" +
 	"\x11CreateUserRequest\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
-	"\bpassword\x18\x03 \x01(\tR\bpassword\"\xd2\x01\n" +
+	"\bpassword\x18\x03 \x01(\tR\bpassword\"*\n" +
 	"\x12CreateUserResponse\x12\x14\n" +
-	"\x05login\x18\x01 \x01(\tR\x05login\x12\x14\n" +
-	"\x05email\x18\x02 \x01(\tR\x05email\x12\"\n" +
-	"\fpasswordHash\x18\x03 \x01(\tR\fpasswordHash\x12\x1e\n" +
-	"\n" +
-	"isVerified\x18\x04 \x01(\bR\n" +
-	"isVerified\x12\x12\n" +
-	"\x04role\x18\x05 \x01(\tR\x04role\x128\n" +
-	"\tCreatedAt\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tCreatedAt\"<\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\"<\n" +
 	"\x0eGetUserRequest\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\"\xcf\x01\n" +
@@ -753,25 +706,24 @@ var file_api_proto_v1_user_proto_goTypes = []any{
 	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
 }
 var file_api_proto_v1_user_proto_depIdxs = []int32{
-	10, // 0: user.CreateUserResponse.CreatedAt:type_name -> google.protobuf.Timestamp
-	10, // 1: user.GetUserResponse.CreatedAt:type_name -> google.protobuf.Timestamp
-	10, // 2: user.PatchUserRequest.createdAt:type_name -> google.protobuf.Timestamp
-	10, // 3: user.PutUserRequest.createdAt:type_name -> google.protobuf.Timestamp
-	0,  // 4: user.authService.CreateUser:input_type -> user.CreateUserRequest
-	2,  // 5: user.authService.GetUser:input_type -> user.GetUserRequest
-	4,  // 6: user.authService.PatchUser:input_type -> user.PatchUserRequest
-	6,  // 7: user.authService.PutUser:input_type -> user.PutUserRequest
-	8,  // 8: user.authService.DeleteUser:input_type -> user.DeleteUserRequest
-	1,  // 9: user.authService.CreateUser:output_type -> user.CreateUserResponse
-	3,  // 10: user.authService.GetUser:output_type -> user.GetUserResponse
-	5,  // 11: user.authService.PatchUser:output_type -> user.PatchUserResponse
-	7,  // 12: user.authService.PutUser:output_type -> user.PutUserResponse
-	9,  // 13: user.authService.DeleteUser:output_type -> user.DeleteUserResponse
-	9,  // [9:14] is the sub-list for method output_type
-	4,  // [4:9] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	10, // 0: user.GetUserResponse.CreatedAt:type_name -> google.protobuf.Timestamp
+	10, // 1: user.PatchUserRequest.createdAt:type_name -> google.protobuf.Timestamp
+	10, // 2: user.PutUserRequest.createdAt:type_name -> google.protobuf.Timestamp
+	0,  // 3: user.authService.CreateUser:input_type -> user.CreateUserRequest
+	2,  // 4: user.authService.GetUser:input_type -> user.GetUserRequest
+	4,  // 5: user.authService.PatchUser:input_type -> user.PatchUserRequest
+	6,  // 6: user.authService.PutUser:input_type -> user.PutUserRequest
+	8,  // 7: user.authService.DeleteUser:input_type -> user.DeleteUserRequest
+	1,  // 8: user.authService.CreateUser:output_type -> user.CreateUserResponse
+	3,  // 9: user.authService.GetUser:output_type -> user.GetUserResponse
+	5,  // 10: user.authService.PatchUser:output_type -> user.PatchUserResponse
+	7,  // 11: user.authService.PutUser:output_type -> user.PutUserResponse
+	9,  // 12: user.authService.DeleteUser:output_type -> user.DeleteUserResponse
+	8,  // [8:13] is the sub-list for method output_type
+	3,  // [3:8] is the sub-list for method input_type
+	3,  // [3:3] is the sub-list for extension type_name
+	3,  // [3:3] is the sub-list for extension extendee
+	0,  // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_api_proto_v1_user_proto_init() }

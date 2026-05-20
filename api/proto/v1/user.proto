@@ -20,12 +20,7 @@ message CreateUserRequest {
     string password = 3; 
 }
 message CreateUserResponse {
-    string login = 1;
-    string email = 2;
-    string passwordHash = 3;
-    bool isVerified = 4;
-    string role = 5;
-    google.protobuf.Timestamp CreatedAt = 6;
+    string token = 1;
 }
 
 message GetUserRequest {

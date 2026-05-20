@@ -51,7 +51,7 @@ func (s *UserService) CreateUser(ctx context.Context, req *models.UserCreateRequ
 
 
 
-func (s *UserService) GetUser(ctx context.Context, req *models.UserCreateRequest) (models.User, error) {
+func (s *UserService) GetUser(ctx context.Context, req *models.UserGetRequest) (models.User, error) {
 	user := &models.User{Login: req.Login, Email: req.Email}
 	if _, err := s.repo.GetUserLogin(ctx, user); err != nil{
 		return *user, fmt.Errorf("Service: There is no User with this login.") 
