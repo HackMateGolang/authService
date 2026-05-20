@@ -4,7 +4,7 @@ import "google/protobuf/timestamp.proto";
 
 package user;
 
-option go_package = "https://github.com/HackMateGolang/authService/api/proto/v1;userpb"
+option go_package = "https://github.com/HackMateGolang/authService/api/proto/v1;userpb";
 
 service authService {
     rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);  
