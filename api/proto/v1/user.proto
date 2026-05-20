@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "https://github.com/HackMateGolang/authService/api/proto/v1
+
