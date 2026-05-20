@@ -1,6 +1,75 @@
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 package user;
 
-option go_package = "https://github.com/HackMateGolang/authService/api/proto/v1
+option go_package = "https://github.com/HackMateGolang/authService/api/proto/v1;userpb"
 
+service authService {
+    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);  
+    rpc GetUser (GetUserRequest) returns (GetUserResponse);
+    rpc PatchUser (PatchUserRequest) returns (PatchUserResponse);
+    rpc PutUser (PutUserRequest) returns (PutUserResponse);
+    rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
+} 
+
+message CreateUserRequest {
+    string login = 1;
+    string email = 2;
+    string password = 3; 
+}
+message CreateUserResponse {
+    string login = 1;
+    string email = 2;
+    string passwordHash = 3;
+    bool isVerified = 4;
+    string role = 5;
+    google.protobuf.Timestamp CreatedAt = 6;
+}
+
+message GetUserRequest {
+    string login = 1;
+    string email = 2;
+}
+
+message GetUserResponse {
+    string login = 1;
+    string email = 2;
+    string passwordHash = 3;
+    bool isVerified = 4;
+    string role = 5;
+    google.protobuf.Timestamp CreatedAt = 6;
+}
+message PatchUserRequest {
+    string login = 1;
+    optional string email = 2;
+    optional string passwordHash = 3;
+    optional bool isVerified = 4;
+    optional string role = 5;
+    optional google.protobuf.Timestamp createdAt = 6;
+}
+
+message PatchUserResponse {
+    bool ok = 1;
+}
+
+message PutUserRequest {
+    string login = 1;
+    string email = 2;
+    string passwordHash = 3;
+    bool isVerified = 4;
+    string role = 5;
+    google.protobuf.Timestamp createdAt = 6;
+}
+
+message PutUserResponse {
+    bool ok = 1;
+}
+message DeleteUserRequest {
+    string login = 1;
+	string email = 2; 
+}
+message DeleteUserResponse {
+    bool ok = 1;
+}
