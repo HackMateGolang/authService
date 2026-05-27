@@ -2,6 +2,8 @@ package service
 
 import (
 	"context"
+	"crypto/rsa"
+	"os"
 	"fmt"
 	"time"
 
@@ -11,8 +13,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var secret string = "HackMate_secretKey"
-
+// var secret string = "HackMate_secretKey"
+var privateKeyPath = "internal/configs/private_key.pem"
+var publicKeyPath = "internal/configs/public_key.pem"
 type UserService struct {
 	repo repository.UserRepository
 }
@@ -76,18 +79,35 @@ func (s *UserService) DeleteUser(ctx context.Context, req *models.UserDeleteRequ
 	return s.repo.DeleteUser(ctx, req)
 }
 
+func loadPrivateKey() (*rsa.PrivateKey, error) {
+	privateKeyPEM, err := os.ReadFile(privateKeyPath)
+	if err != nil {
+		return nil, err
+	}
+
+	privateKey, err := jwt.ParseRSAPrivateKeyFromPEM(privateKeyPEM)
+	if err != nil {
+		return nil, err
+	}
+
+	return privateKey, nil
+}
 
 
 
 func generateToken(userId string) (string, error) {
-	claims := jwt.MapClaims{
-		"user_id": userId,
-		"exp": time.Now().Add(time.Hour * 24).Unix(),
+	privateKey, err := loadPrivateKey()
+	if err != nil {
+		return "", err
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	claims := jwt.MapClaims{
+		"user_id": userId,
+		"exp":     time.Now().Add(time.Hour * 24).Unix(),
+	}
 
-	return token.SignedString([]byte(secret))
+	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
+	return token.SignedString(privateKey)
 }
 
 func hashPassword(password string) (string, error) {
